@@ -1,0 +1,5 @@
+#ignore temp files
+*~
+
+#ignore intermediate files
+*.o

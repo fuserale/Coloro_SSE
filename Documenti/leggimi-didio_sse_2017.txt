@@ -1,0 +1,139 @@
+Esempio di esecuzione
+=====================
+
+Si chiama bash su ./Color_map2.sh,
+si risponde alle domande sul grafo.
+Il programma genera:
+input_file.3924.pla   
+output_file.3924.pla  
+output_sat.3924.dat.
+Genera anche input_file vuoto.
+
+villa@villa-OptiPlex-GX620:~/corsi/sse/laboratori/presentazioni/esercizi_espresso/progetto-coloro-didio$ ls
+Color_map2.sh  DPLL.tar  input_file.2472.pla   output_sat.2472.dat
+DPLL-SAT       espresso  output_file.2472.pla  relazione-didio.pdf
+villa@villa-OptiPlex-GX620:~/corsi/sse/laboratori/presentazioni/esercizi_espresso/progetto-coloro-didio$ bash ./Color_map2.sh 
+###########################################################
+#    Individuare il numero minimo per colorare un grafo   #
+###########################################################
+ > Fase 1 ..
+ >  Inserire il numero dei nodi della mappa 
+3
+Nodi del grafo generati: 
+ 1 2 3 
+ >  Inserire i nodi per cui vi è un arco
+    (scrivere -1 -1 per terminare)
+1 2
+2 3
+-1 -1
+File di input per espresso: input_file.3924.pla creato ..
+ > Minimizzazione mediante espresso ..
+File di output generato da espresso: output_file.3924.pla ..
+ > Fase 2 ..
+ > Decodifica output .. 
+N. colori: 2
+file temporaneo: temp.3924.dat
+A assegno colore 1
+C assegno colore 1
+B assegno colore 2
+rimozione file temporaneo temp.3924.dat
+ > Fase 3 ..
+ >  Riscrittura dell'input in CNF per verificare la 2-Colorabilità 
+Rimuovo l'ultimo carattere
+File output_sat.3924.dat per il DPLL generato con 2-Colori.
+villa@villa-OptiPlex-GX620:~/corsi/sse/laboratori/presentazioni/esercizi_espresso/progetto-coloro-didio$ ls
+Color_map2.sh  espresso             input_file.3924.pla   output_sat.2472.dat
+DPLL-SAT       input_file           output_file.2472.pla  output_sat.3924.dat
+DPLL.tar       input_file.2472.pla  output_file.3924.pla  relazione-didio.pdf
+villa@villa-OptiPlex-GX620:~/corsi/sse/laboratori/presentazioni/esercizi_espresso/progetto-coloro-didio$
+
+
+
+In alternativa si puo' eseguire il programma come:
+==================================================
+ bash ./Color_map2.sh -f output_file.3924.pla
+
+villa@villa-OptiPlex-GX620:~/corsi/sse/laboratori/presentazioni/esercizi_espresso/progetto-coloro-didio$ ls -l
+total 788
+-rwxrwxrwx 1 villa villa   5879 feb  1 19:49 Color_map2.sh
+drwxrwxr-x 3 villa villa   4096 dic  5 21:52 DPLL-SAT
+-rw------- 1 villa villa 235520 feb  1 12:18 DPLL.tar
+-rwxr--r-- 1 villa villa 201929 feb  1 19:48 espresso
+-rw------- 1 villa villa    841 feb  1 12:14 input_file.2472.pla
+-rw-rw-r-- 1 villa villa     54 feb  2 09:32 input_file.3924.pla
+-rw-rw-r-- 1 villa villa   2017 feb  2 09:37 leggimi
+-rw------- 1 villa villa    113 feb  1 12:13 output_file.2472.pla
+-rw-rw-r-- 1 villa villa     30 feb  2 09:32 output_file.3924.pla
+-rw------- 1 villa villa   4026 feb  1 12:16 output_sat.2472.dat
+-rw-rw-r-- 1 villa villa    112 feb  2 09:32 output_sat.3924.dat
+-rw------- 1 villa villa 321512 feb  1 10:57 relazione-didio.pdf
+villa@villa-OptiPlex-GX620:~/corsi/sse/laboratori/presentazioni/esercizi_espresso/progetto-coloro-didio$ bash ./Color_map2.sh -f output_file.3924.pla
+###########################################################
+#    Individuare il numero minimo per colorare un grafo   #
+###########################################################
+Salto fase di lettura..
+Fase di decodifica del file output_file.3924.pla ..
+N. colori: 2
+file temporaneo: temp.4111.dat
+A assegno colore 1
+C assegno colore 1
+B assegno colore 2
+rimozione file temporaneo temp.4111.dat
+ > Fase 3 ..
+ >  Riscrittura dell'input in CNF per verificare la 2-Colorabilità 
+Rimuovo file output_sat.3924.dat già esistente ..
+Rimuovo l'ultimo carattere
+File output_sat.3924.dat per il DPLL generato con 2-Colori.
+villa@villa-OptiPlex-GX620:~/corsi/sse/laboratori/presentazioni/esercizi_espresso/progetto-coloro-didio$ ls -l
+total 788
+-rwxrwxrwx 1 villa villa   5879 feb  1 19:49 Color_map2.sh
+drwxrwxr-x 3 villa villa   4096 dic  5 21:52 DPLL-SAT
+-rw------- 1 villa villa 235520 feb  1 12:18 DPLL.tar
+-rwxr--r-- 1 villa villa 201929 feb  1 19:48 espresso
+-rw------- 1 villa villa    841 feb  1 12:14 input_file.2472.pla
+-rw-rw-r-- 1 villa villa     54 feb  2 09:32 input_file.3924.pla
+-rw-rw-r-- 1 villa villa   2017 feb  2 09:37 leggimi
+-rw------- 1 villa villa    113 feb  1 12:13 output_file.2472.pla
+-rw-rw-r-- 1 villa villa     30 feb  2 09:32 output_file.3924.pla
+-rw------- 1 villa villa   4026 feb  1 12:16 output_sat.2472.dat
+-rw-rw-r-- 1 villa villa    224 feb  2 09:42 output_sat.3924.dat
+-rw------- 1 villa villa 321512 feb  1 10:57 relazione-didio.pdf
+villa@villa-OptiPlex-GX620:~/corsi/sse/laboratori/presentazioni/esercizi_espresso/progetto-coloro-didio$
+
+
+
+Per eseguire la verifica di soddisfacibilita':
+==============================================
+
+villa@villa-OptiPlex-GX620:~/corsi/sse/laboratori/presentazioni/esercizi_espresso/progetto-coloro-didio$ DPLL-SAT/dpll <  output_sat.3924.dat
+A1=true A2=false B1=false B2=true C1=true C2=false 
+villa@villa-OptiPlex-GX620:~/corsi/sse/laboratori/presentazioni/esercizi_espresso/progetto-coloro-didio$ 
+
+
+
+
+Continuazione del progetto:
+===========================
+1)
+Leggere i grafi in ingresso da un file
+vedi https://sites.google.com/site/graphcoloring/
+(un esempio del formato:
+http://mat.tepper.cmu.edu/ROIS/instances/graph/uploads/1-FullIns_3.txt)
+
+2) 
+Confrontare i due metodi tra loro e con algoritmi specializzati
+disponibili nel sito di cui sopra applicandoli ai grafi disponibili nel sito
+
+
+3) Estensione a multi-colorazione ?
+
+4) Confronto con colorazione usando BDD/ZDD ?
+   Bibliografia: 
+   O. Coudert, “Selection Graph Coloring: Application to Constrained Encoding”, submitted to DAC’99, Oct 1998.
+   O. Coudert, “Solving Dichotomy-based Constrained Encoding With Twin Graph Coloring“, in Proc. of IWLS’98, Lake Tahoe CA, June 1998
+O. Coudert, “Exact Coloring of Real-Life Graphs is Easy“, in Proc. of 34th DAC, Anaheim, CA, June 1997.
+O. Coudert, “Coloring Real-Life Graphs“, in Proc. of IWLS’97, Lake Tahoe CA, May 1997.
+O. Coudert, “An Exact Algorithm to Color Real-Life Graphs“, submitted (March 1997) to IEEE Trans. on Computers
+O. Coudert, “Coloring Real-Life Graphs“, in Proc. of IWLS’97, Lake Tahoe CA, May 1997.
+O. Coudert, “Solving Graph Optimization Problems with ZBDDs“, in Proc. of ED&TC’97, Paris, France, March 1997.
+http://www.ocoudert.com/blog/publications/
