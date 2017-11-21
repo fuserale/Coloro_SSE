@@ -1,0 +1,14 @@
+\BOOKMARK [1][-]{section.1}{Obiettivo del Progetto}{}% 1
+\BOOKMARK [1][-]{section.2}{Background}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Problema della Colorazione di un grafo}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Problema della soddisfacibilit\340 booleana}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Da k-graph a k-SAT}{section.2}% 5
+\BOOKMARK [1][-]{section.3}{Formato DIMACS}{}% 6
+\BOOKMARK [1][-]{section.4}{Colorabilit\340 del grafo tramite espresso}{}% 7
+\BOOKMARK [2][-]{subsection.4.1}{Minimizzazione tramite espresso}{section.4}% 8
+\BOOKMARK [1][-]{section.5}{Soddisfacibilit\340 CNF}{}% 9
+\BOOKMARK [2][-]{subsection.5.1}{Algoritmo DPLL}{section.5}% 10
+\BOOKMARK [2][-]{subsection.5.2}{Conversione e soluzione}{section.5}% 11
+\BOOKMARK [1][-]{section.6}{Prestazioni}{}% 12
+\BOOKMARK [2][-]{subsection.6.1}{Commenti}{section.6}% 13
+\BOOKMARK [1][-]{section.7}{Futuri Lavori}{}% 14

@@ -1,0 +1,386 @@
+\documentclass[a4paper,11pt]{article} %report
+%oneside/twoside, openany/openright, twocolumn
+\usepackage[T1]{fontenc} % codifica dei font
+\usepackage[utf8]{inputenc} % lettere accentate da tastiera
+\usepackage[italian]{babel} % lingua del documento
+\usepackage{lipsum} % genera testo fittizio
+\usepackage{url} % per scrivere gli indirizzi Internet
+\usepackage{siunitx}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage[final]{pdfpages}
+\usepackage[hidelinks]{hyperref} %collegamenti ipertestuali --> \href{ h indirizzo Internet i }{ h testo del collegamento i }
+
+
+\begin{document}
+
+\author{Fuser Alessandro - VR405372}
+\title{Progetto di Software per Sistemi Embedded \\ Graph and SAT problem coloring}
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Obiettivo del Progetto}
+Gli obiettivi del progetto assegnato sono:
+\begin{enumerate}
+	\item Definire una funzione per leggere dei grafi da file, nel formato standard DIMACS;
+	\item Usare Espresso per risolvere il problema della colorazione di un grafo;
+	\item Usare un SAT solver per risolvere il problema della soddisficibilità booleana in relazione alla colorazione di un grafo;
+	\item Confronto di prestazioni dei due metodi.
+\end{enumerate}
+
+\section{Background}
+\subsection{Problema della Colorazione di un grafo}
+Un grafo è un insieme di elementi detti nodi o vertici che possono essere collegati fra loro da linee chiamate archi o lati o spigoli. Più formalmente, si dice grafo una coppia ordinata G = (V, E) di insiemi, con V insieme dei nodi ed E insieme degli archi, tali che gli elementi di E siano coppie di elementi di V. \\
+Il problema della colorazione di un grafo può essere visto come un problema di etichettatura dei vertici del grafo, nel quale è richiesto di assegnare un colore ad ogni vertice, con la condizione che vertici tra loro connessi non abbiano lo stesso colore assegnato. La k-colorabilità si tratta di trovare un numero k il più piccolo possibile tale per cui il grafo possa essere colorato senza violare il vincolo del problema. \\
+Una volta trovato il numero di colori k, il problema richiede l'assegnamento di un colore $c_{i}$ con i <= k per ogni vertice $v_{j}$ con j <= $|V|$.\\
+
+
+\subsection{Problema della soddisfacibilità booleana}
+Una formula è in forma normale congiuntiva o congiunta (FNC), indicata anche come CNF (acronimo di Conjunctive Normal Form) se è una congiunzione di clausole, dove le clausole sono una disgiunzione di letterali. Una formula in CNF ha quindi la seguente struttura:
+
+${\displaystyle \bigwedge _{i=1}^{n}\left(\bigvee _{k=1}^{m(i)}L_{i,k}\right)}$ \\
+
+nel quale:
+\begin{itemize}
+	\item n è il numero di clausole;
+	\item m(i) è il numero di letterali della clausola i-esima;
+	\item $L_{i,k}$ è il k-esimo letterale della i-esima clausola.
+\end{itemize}
+Un letterale può essere una variabile booleana (cioè può valere solo 0 o 1, ossia vero o falso) o la negazione di una variabile.\\
+Formalmente, la soddisfacibilità booleana, o soddisfacibilità proposizionale o SAT, è il problema di determinare se una formula booleana è soddisfacibile o insoddisfacibile. La formula si dice soddisfacibile se le variabili possono essere assegnate in modo che la formula assuma il valore di verità vero. Viceversa, si dice insoddisfacibile se tale assegnamento non esiste (pertanto, la funzione espressa dalla formula è identicamente falsa).
+
+\subsection{Da k-graph a k-SAT}
+Ma come si passa da un problema di colorabilità di un grafo ad un problema di soddisfacibilità booleana?\\
+Una volta che si è trovato un numero k tale per cui il grafo è colorabile, la conversione viene effettuata seguendo tali regole:
+\begin{enumerate}
+	\item Per tutti i vertici, si crea la possibilità che abbia un colore da 1 a k;
+	\item Per tutti i vertici, si nega la possibilità che lo stesso vertice possa avere più di un colore;
+	\item In funzione degli archi, mi assicuro che i vertici toccati da due archi non abbiano mai lo stesso colore.
+\end{enumerate}
+\begin{figure}[h]
+	\centering
+    \includegraphics[scale=0.5]{kcolor_to_sat.jpg}
+    \caption{Regole riduzione da k-Color a SAT (descritte sopra)}
+\end{figure}
+
+\pagebreak
+\section{Formato DIMACS}
+Il formato scelto per i grafi è lo standard DIMACS edge, nel quale:
+\begin{itemize}
+	\item Le righe che iniziano con "c" sono dei commenti per spiegare il grafo;
+	\item La riga che inizia con "p" indica il numero di nodi e di archi;
+	\item Le righe che iniziano con "e" indicano il collegamento tra due vertici.
+\end{itemize}
+Esempio di grafo DIMACS:\\
+\begin{verbatim}
+c FILE: myciel3.col
+c SOURCE: Michael Trick (trick@cmu.edu)
+c DESCRIPTION: Graph based on Mycielski transformation. 
+c              Triangle free (clique number 2) but increasing
+c              coloring number
+p edge 11 20
+e 1 2
+e 1 4
+e 1 7
+e 1 9
+e 2 3
+e 2 6
+e 2 8
+e 3 5
+e 3 7
+e 3 10
+e 4 5
+e 4 6
+e 4 10
+e 5 8
+e 5 9
+e 6 11
+e 7 11
+e 8 11
+e 9 11
+e 10 11
+\end{verbatim}
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5]{myciel.jpg}
+	\caption{Rappresentazione del grafo myciel3}
+\end{figure}
+Il formato scelto per la rappresentazione delle formule CNF è lo standard DIMACS cnf, dove:
+\begin{itemize}
+	\item La prima riga, che comincia con "p", indica che il formato è in CNF ed il numero di variabili e clausole;
+	\item Le righe successive indicano le clausole ed ogni riga termina uno zero; un numero rappresenta una variabile e, se preceduta da un -, allora tale variabile, all'interno della clausola, è negata.
+\end{itemize}
+
+\section{Colorabilità del grafo tramite espresso}
+
+Dato un generico grafo G(V, E), con V l’insieme dei nodi e E l’insieme dei vertici, costruiamo in funzione delle
+sottoregioni presenti nel grafo, un PLA nel modo seguente:
+\begin{itemize}
+	\item Il numero delle variabili di input è uguale al numero dei nodi $|V|$ presenti nel grafo;
+	\item Restituiamo in output 1 bit che indicherà la colorabilità della sottoregione;
+	\item Costruiamo il PLA di tipo fr, pertanto il significato dei termini è il seguente:
+	\begin{itemize}
+		\item con il termine 1, indichiamo che il prodotto dei termini appartenenza all’insieme ON-Set;
+		\item con il termine 0, indichiamo che il prodotto dei termini appartenenza all’insieme OFF-Set;
+		\item con il termine -, indichiamo l’insieme DC-Set, il quale rappresenta il complemento dell’unione tra ON-Set e OFF-Set;
+	\end{itemize}
+	\item Definiamo l’insieme degli ON-Set, come $|V|$ righe che rappresentano le aree della mappa che possono avere il medesimo colore;
+	\item Definiamo l’insieme degli OFF-Set, pari al numero degli archi contenuti in E, come l’insieme delle regioni
+	che devono avere colore differenti.
+\end{itemize}
+Esempio di trasformazione, prendendo il grafo presentato prima:
+\begin{verbatim}
+.i 11
+.o 1
+.type fr
+-0000000000 1
+0-000000000 1
+00-00000000 1
+000-0000000 1
+0000-000000 1
+00000-00000 1
+000000-0000 1
+0000000-000 1
+00000000-00 1
+000000000-0 1
+0000000000- 1
+11--------- 0
+1--1------- 0
+1-----1---- 0
+1-------1-- 0
+-11-------- 0
+-1---1----- 0
+-1-----1--- 0
+--1-1------ 0
+--1---1---- 0
+--1------1- 0
+---11------ 0
+---1-1----- 0
+---1-----1- 0
+----1--1--- 0
+----1---1-- 0
+-----1----1 0
+------1---1 0
+-------1--1 0
+--------1-1 0
+---------11 0
+.end
+\end{verbatim}
+\subsection{Minimizzazione tramite espresso}
+Passiamo l’input generato a espresso il quale, mediante l’algoritmo Expand Reduce, si preoccuperà di minimizzare la funzione in input F, restituendo l’insieme dei cubi che rappresentano gli implicanti primi che ricoprono F.\\
+Più in dettaglio, l'algoritmo di espresso:
+\begin{enumerate}
+	\item \textbf{Espansione}: un cubo viene espanso fino a che non è primo (non include vertici dell'offset); questo comporta fare il complemento di ogni input, a turno, per verificare se il nuovo vertice è un membro dell'off-set o dell'on-set. Alla fine del processo di espansione, si ha un copertura prima della funzione tale che nessun cubo primo contiene un altro cubo primo;
+	\item \textbf{Copertura Irridondante}: i primi vengono classificati come cubi "essenziali relativi" se non possono essere omessi senza distruggere la proprietà di copertura della funzione e, invece, classificati come cubi "ridondanti" se possono essere rimossi senza distruggere tale proprietà. Quest'ultio insieme può essere a sua volta partizionato in "totalmente ridondanti" e "parzialmente ridondanti" ed una procedura di scelta di minimi irridondanti cerca di prendere una copertura minimale;
+	\item \textbf{Riduzione}: le procedure precedenti danno una soluzione localmente ottima che potrebbe anche non essere quella globalmente ottima (dato che il problema è NPC). La riduzione trasforma un copertura prima in una nuova copertura sostituendo ogni cubo con un cubo più piccolo contenuto in esso.
+\end{enumerate}
+La procedura è iterata fino a che non ho ulteriori miglioramenti nella minimizzazione della funzione e può essere visualizzata nella seguente figura:
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{espresso.png}
+	\caption{Algoritmo illustrato di Espresso}
+\end{figure}
+\\La minimizzazione mediante espresso restituirà n termini, indicati nella clausola ".p n", il quale rappresenta il numero di colori necessario per colorare il grafo di input secondo tale minimizzazione.\\
+L’insieme dei DC contenuto in ogni termine, rappresenterà una sotto regione dello spazio indipendente dal grafo,che può avere lo stesso colore. Pertanto, per ogni termine prodotto da espresso, leggiamo quali sono le variabili che hanno il termine Don’t-Care, $0 - 0$ , e, alle variabili associate a cui non è stato ancora assegnato un colore, procediamo assegnando il primo colore disponibile.\\
+Per il grafo precedente quindi:
+\begin{verbatim}
+.i 11
+.o 1
+.p 4
+00000-----0 1
+0000---00-0 1
+-0-0000000- 1
+0-0-00-0-00 1
+.e
+\end{verbatim}
+Al quale corrisponde la seguente colorazione:
+\begin{verbatim}
+A6 assegno colore 1
+A7 assegno colore 1
+A8 assegno colore 1
+A9 assegno colore 1
+A10 assegno colore 1
+A5 assegno colore 2
+A1 assegno colore 3
+A3 assegno colore 3
+A11 assegno colore 3
+A2 assegno colore 4
+A4 assegno colore 4
+\end{verbatim}
+
+\pagebreak
+
+\section{Soddisfacibilità CNF}
+\subsection{Algoritmo DPLL}
+DPLL (Davis, Putnam, Logemann e Loveland) è un algoritmo che mediante la tecnica del backtracking, permette di risolvere il problema della soddisfacità di un espressione booleana in forma normale congiunta (CNF-SAT). L’algoritmo, ipotizza e assegna un valore di verità a un letterale (Vero o falso), e propaga tale valore in tutte le clausole ed in maniera ricorsiva verifica ogni volta se la formula è soddisfacibile o meno, in caso negativo si complementa il valore di verità che si era ipotizzato. Una volta ipotizzato vero un valore di verità, è possibile rimuovere tutte le clausole dove è presente il valore vero,
+al contrario se il valore è falso è possibile rimuovere il letterale dalla clausola.
+L’algoritmo ad ogni passo esegue due iterazioni:
+\begin{itemize}
+	\item verifica della presenza di clausole unarie: se vi sono clausole dove è rimasto solo un letterale, l’unico modo per avere la formula vera è quello di assegnare il letterale rimasto a vero e propagarlo;
+	\item verifica della presenza di letterali puri: se una variabile appare solo positiva o solo negativa, viene definita pura. Avendo una sola possibilità di assegnamento. L’algoritmo semplifica l’equazione rimuovendo tutte le clausole che contengono i letterali puri.
+\end{itemize}
+
+\subsection{Conversione e soluzione}
+Dato il grafo generico G=(V,E), è possibile effettuare la conversione in formato DIMACS cnf, descritto sopra, tramite le regole presentate. Ma come trovo il numero di colori per effettuare tale conversione?
+Due sono gli approcci presentati, entrambi basati sul problema Clique, ossia un insieme di vertici di V tale esiste un arco tra tutti i vertici dell'insieme, per cui, nel nostro problema, corrisponde al limite minimo di colori in quanto vertici collegati devono avere colori diversi:
+\begin{enumerate}
+	\item Algoritmo di ricerca binaria, che comincia usando un k massimo (=$|V|$), un minimo dato dalla dimensione massima della clique e, ogni volta che la formula è soddisfacibile con tale k, ripone il problema con un k dimezzato, fino a che la formula non è più soddisfacibile ed allora aumenta k di un valore a metà tra l'ultimo soddisfacibile e quello attuale;
+	\item sfruttando il problema della Clique, trovo quella più grande, che mi rappresenta il lower bound di colori e da questo aumento k di 1 fino a che la formula non è soddisfacibile.
+\end{enumerate}
+Il metodo che è stato utilizzato per la conversione è il secondo, in quanto si è dimostrato più veloce in tutte le situazioni.
+Una volta scelto un k, la conversione viene effettuata nel formato DIMACS cnf, presentato precedentemente. Per l'esempio presentato prima, la conversione con 4 colori è:
+\begin{verbatim}
+p cnf 44 91
+1 2 3 4 0
+5 6 7 8 0
+9 10 11 12 0
+13 14 15 16 0
+17 18 19 20 0
+21 22 23 24 0
+25 26 27 28 0
+29 30 31 32 0
+33 34 35 36 0
+37 38 39 40 0
+41 42 43 44 0
+-1 -5 0
+-2 -6 0
+-3 -7 0
+-4 -8 0
+-1 -13 0
+-2 -14 0
+-3 -15 0
+-4 -16 0
+-1 -25 0
+-2 -26 0
+-3 -27 0
+-4 -28 0
+-1 -33 0
+-2 -34 0
+-3 -35 0
+-4 -36 0
+-5 -9 0
+-6 -10 0
+-7 -11 0
+-8 -12 0
+-5 -21 0
+-6 -22 0
+-7 -23 0
+-8 -24 0
+-5 -29 0
+-6 -30 0
+-7 -31 0
+-8 -32 0
+-9 -17 0
+-10 -18 0
+-11 -19 0
+-12 -20 0
+-9 -25 0
+-10 -26 0
+-11 -27 0
+-12 -28 0
+-9 -37 0
+-10 -38 0
+-11 -39 0
+-12 -40 0
+-13 -17 0
+-14 -18 0
+-15 -19 0
+-16 -20 0
+-13 -21 0
+-14 -22 0
+-15 -23 0
+-16 -24 0
+-13 -37 0
+-14 -38 0
+-15 -39 0
+-16 -40 0
+-17 -29 0
+-18 -30 0
+-19 -31 0
+-20 -32 0
+-17 -33 0
+-18 -34 0
+-19 -35 0
+-20 -36 0
+-21 -41 0
+-22 -42 0
+-23 -43 0
+-24 -44 0
+-25 -41 0
+-26 -42 0
+-27 -43 0
+-28 -44 0
+-29 -41 0
+-30 -42 0
+-31 -43 0
+-32 -44 0
+-33 -41 0
+-34 -42 0
+-35 -43 0
+-36 -44 0
+-37 -41 0
+-38 -42 0
+-39 -43 0
+-40 -44 0
+\end{verbatim}
+
+
+La risoluzione tramite MINISAT porta al seguente assegnamento:\\
+SAT
+-1 -2 -3 4 5 -6 -7 -8 -9 -10 11 -12 -13 -14 15 -16 17 -18 -19 -20 -21 22 -23 -24 -25 26 -27 -28 -29 30 -31 -32 -33 34 -35 -36 -37 38 -39 -40 41 -42 -43 -44 0\\
+Dove SAT indica che la formula è soddisfacibile tramite l'assegnamento delle variabili indicato successivamente, dove se ho un "-" allora la variabile è posta a FALSE, altrimenti a TRUE e lo zero indica la fine del file.
+
+\pagebreak
+
+\section{Prestazioni}
+Tutte le prove sono state fatto su una macchina portatile con un i7-4710HQ e 16GB di RAM.\\
+Il confronto è stato fatto su una serie di grafi presi dal sito \href{https://sites.google.com/site/graphcoloring/vertex-coloring}{Graph Coloring Benchmarks}. Sono stati relazionati i tempi relativi alla soluzione con Espresso, con Minisat \cite{minisat} (solutore per SAT), DPLL \cite{dpll}(solutore per SAT) e i risultati della \cite{tesi}.
+Per ogni problema, è stato impostato un timer di 30 minuti in quanto eravamo interessati ad una risoluzione veloce del problema. L'unica eccezione viene data dal problema \href{https://it.wikipedia.org/wiki/Rompicapo_delle_otto_regine}{\textbf{queen8}}, che viene preso come esempio principale della difficoltà computazionale.
+Le tempistiche sono riassunte nella tabella successiva, dove:
+\begin{itemize}
+	\item La prima colonna riporta il nome del problema;
+	\item La seconda colonna riporta il numero di vertici del grafo;
+	\item La terza colonna riporta il numero di archi del grafo;
+	\item La quarta colonna riporta la densità del grafo;
+	\item La quarta colonna riporta il minimo della dimensione della massima clique;
+	\item La quinta colonna riporta la dimensione della massima clique;
+	\item La sesta colonna riporta il numero di cromatico migliore trovato in letteratura;
+	\item La settima ed ottava colonna riportano il numero cromatico ed il tempo con Espresso;
+	\item La nona e decima colonna riportano il numero cromatico ed il tempo con Minisat;
+	\item L'undicesima colonna riporta il tempo riferito nella \cite{tesi};
+	\item Le ultime due colonne riportano il numero cromatico ed il tempo con Minisat usando il primo metodo di conversione.
+\end{itemize}
+
+\includepdf[pages=-]{datifile.pdf}
+
+\subsection{Commenti}
+Come si può notare, in tutti i problemi la risoluzione tramite MINISAT è molto più rapida rispetto ad Espresso. Questo potrebbe essere dovuto alla complessità computazionale della minimizzazione di espresso, che può essere molto dispendiosa sia in termini di tempo che di risorse, dato che le 3 funzioni interne di espresso portano a colorare il grafo in funzione degli implicanti primi essenziali della funzione di partenza (complessi da calcolare).\\
+E' interessante notare però come il problema queen8 (così come il problema queen9) non è stato risolto nè da espresso nè da MINISAT in termini ragionevoli (24 ore), il che ci fa capire che problemi difficili sono tali sia per espresso che per MINISAT.\\
+Rispetto al DPLL, MINISAT è più veloce in quanto si basa sullo stesso algoritmo usato per DPLL, ma aggiungendo molte ottimizzazioni, come si legge in \cite{minisat}. DPLL è stato abbandonato dopo pochi problemi in quanto riportano sempre tempi maggiori rispetto a MINISAT, per cui ci si è concentrati sul migliore risolutore per SAT.\\
+Un altro aspetto da tenere conto è il fatto che sfruttare il problema della clique come punto di partenza della scelta dei colori è più efficace rispetto ad usare un approccio binario per la ricerca dei colori e la clique come lower bound. Questo è dovuto al fatto che, nella maggior parte dei casi, il valore della clique più grande è molto vicino al numero cromatico del grafo, per cui le iterazioni sono minori.
+
+\pagebreak
+
+\section{Futuri Lavori}
+Per futuri lavori, sarebbe interessante provare altri solutori SAT in modo da vedere se anche i problemi che non vengono risolti usando i solutori presentati vengono decisi.\\
+Un altro aspetto interessante sarebbe quello di capire se la non risoluzione è dovuta alla semplice mancanza di sufficiente potenza di calcolo, per cui accedere ad un computer dalle prestazioni superiori.\\
+Un'ulteriore tema che si può affrontare è la multi-colorazione dei grafi, per cui estendere gli attuali programmi e provare su altri grafi.
+
+
+\pagebreak
+
+\begin{thebibliography}{9}
+	\bibitem{tesi} Stefan Kugele,  
+	\emph{Efficient Solving of Combinatorial Problems using SAT-Solvers}
+	
+	\bibitem{minisat} \href{http://minisat.se/}{http://minisat.se/}
+	
+	\bibitem{dpll} \href{https://it.wikipedia.org/wiki/DPLL}{https://it.wikipedia.org/wiki/DPLL}
+\end{thebibliography}
+
+
+\end{document}
