@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.11.17)  21 NOV 2017 16:55
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.11.17)  11 JAN 2018 11:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1153,107 +1153,119 @@ Underfull \hbox (badness 10000) in paragraph at lines 45--46
 
  []
 
-[2] <kcolor_to_sat.jpg, id=100, 473.77pt x 217.81375pt>
+[2] <kcolor_to_sat.jpg, id=90, 473.77pt x 217.81375pt>
 File: kcolor_to_sat.jpg Graphic file (type jpg)
-
-<use kcolor_to_sat.jpg>
+ <use kcolor_to_sat.jpg>
 Package pdftex.def Info: kcolor_to_sat.jpg used on input line 66.
 (pdftex.def)             Requested size: 236.88441pt x 108.9066pt.
- [3 <./kcolor_to_sat.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 78--79
+
+Overfull \hbox (84.08052pt too wide) in paragraph at lines 69--72
+\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 p[] [] p[]\OT1/cmr/m/n/10.95 ) [](\OML/
+cmm/m/it/10.95 p[] [] p[]\OT1/cmr/m/n/10.95 ) [](\OML/cmm/m/it/10.95 p[] [] p[]
+\OT1/cmr/m/n/10.95 ) [] \OMS/cmsy/m/n/10.95 :\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/
+10.95 p[] [] p[]\OT1/cmr/m/n/10.95 ) [] \OMS/cmsy/m/n/10.95 :\OT1/cmr/m/n/10.95
+ (\OML/cmm/m/it/10.95 p[] [] p[]\OT1/cmr/m/n/10.95 ) [] \OMS/cmsy/m/n/10.95 :\O
+T1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 p[] [] p[]\OT1/cmr/m/n/10.95 ) [] \OMS/cm
+sy/m/n/10.95 :\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 p[] [] p[]\OT1/cmr/m/n/10
+.95 )$
+ []
+
+[3 <./kcolor_to_sat.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 79--80
 
  []
 
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 79.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 80.
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-<myciel.jpg, id=109, 301.125pt x 301.125pt>
+<myciel.jpg, id=100, 301.125pt x 301.125pt>
 File: myciel.jpg Graphic file (type jpg)
  <use myciel.jpg>
-Package pdftex.def Info: myciel.jpg used on input line 109.
+Package pdftex.def Info: myciel.jpg used on input line 110.
 (pdftex.def)             Requested size: 150.56212pt x 150.56212pt.
- [4] [5 <./myciel.jpg>] [6] <espresso.png, id=127, 500.87125pt x 616.3025pt>
-File: espresso.png Graphic file (type png)
- <use espresso.png>
-Package pdftex.def Info: espresso.png used on input line 184.
-(pdftex.def)             Requested size: 250.435pt x 308.1505pt.
-
-[7 <./espresso.png>] [8]
-Overfull \hbox (0.59712pt too wide) in paragraph at lines 231--232
+ [4] [5 <./myciel.jpg>] [6]
+Overfull \hbox (0.59712pt too wide) in paragraph at lines 183--184
 []\T1/cmr/m/n/10.95 Algoritmo di ri-cer-ca bi-na-ria, che co-min-cia usan-do un
  k mas-si-mo (=$\OMS/cmsy/m/n/10.95 j\OML/cmm/m/it/10.95 V\OMS/cmsy/m/n/10.95 j
 $\T1/cmr/m/n/10.95 ),
  []
 
-[9] [10] [11] [12] <datifile.pdf, id=166, 845.1575pt x 597.23125pt>
+[7] [8] [9]
+
+LaTeX Warning: Citation `dpll' on page 10 undefined on input line 293.
+
+<datifile.pdf, id=137, 845.1575pt x 597.23125pt>
+File: datifile.pdf Graphic file (type pdf)
+ <use datifile.pdf>
+Package pdftex.def Info: datifile.pdf used on input line 310.
+(pdftex.def)             Requested size: 845.15544pt x 597.22978pt.
 File: datifile.pdf Graphic file (type pdf)
 
 <use datifile.pdf>
-Package pdftex.def Info: datifile.pdf used on input line 358.
+Package pdftex.def Info: datifile.pdf used on input line 310.
 (pdftex.def)             Requested size: 845.15544pt x 597.22978pt.
-File: datifile.pdf Graphic file (type pdf)
- <use datifile.pdf>
-Package pdftex.def Info: datifile.pdf used on input line 358.
-(pdftex.def)             Requested size: 845.15544pt x 597.22978pt.
-
-<datifile.pdf, id=169, page=1, 845.1575pt x 597.23125pt>
+ <datifile.pdf, id=140, page=1, 845.1575pt x 597.23125pt>
 File: datifile.pdf Graphic file (type pdf)
 
 <use datifile.pdf, page 1>
-Package pdftex.def Info: datifile.pdf, page1 used on input line 358.
+Package pdftex.def Info: datifile.pdf, page1 used on input line 310.
 (pdftex.def)             Requested size: 845.15544pt x 597.22978pt.
 File: datifile.pdf Graphic file (type pdf)
  <use datifile.pdf, page 1>
-Package pdftex.def Info: datifile.pdf, page1 used on input line 358.
+Package pdftex.def Info: datifile.pdf, page1 used on input line 310.
 (pdftex.def)             Requested size: 597.61578pt x 422.30568pt.
- [13]
+ [10]
 File: datifile.pdf Graphic file (type pdf)
 
 <use datifile.pdf, page 1>
-Package pdftex.def Info: datifile.pdf, page1 used on input line 358.
+Package pdftex.def Info: datifile.pdf, page1 used on input line 310.
 (pdftex.def)             Requested size: 597.61578pt x 422.30568pt.
 File: datifile.pdf Graphic file (type pdf)
  <use datifile.pdf, page 1>
-Package pdftex.def Info: datifile.pdf, page1 used on input line 358.
+Package pdftex.def Info: datifile.pdf, page1 used on input line 310.
 (pdftex.def)             Requested size: 597.61578pt x 422.30568pt.
 File: datifile.pdf Graphic file (type pdf)
 
 <use datifile.pdf, page 1>
-Package pdftex.def Info: datifile.pdf, page1 used on input line 358.
+Package pdftex.def Info: datifile.pdf, page1 used on input line 310.
 (pdftex.def)             Requested size: 597.61578pt x 422.30568pt.
- [14 <./datifile.pdf>]
-<datifile.pdf, id=200, page=2, 845.1575pt x 597.23125pt>
+ [11 <./datifile.pdf>]
+<datifile.pdf, id=170, page=2, 845.1575pt x 597.23125pt>
 File: datifile.pdf Graphic file (type pdf)
 
 <use datifile.pdf, page 2>
-Package pdftex.def Info: datifile.pdf, page2 used on input line 358.
+Package pdftex.def Info: datifile.pdf, page2 used on input line 310.
 (pdftex.def)             Requested size: 597.61578pt x 422.30568pt.
 File: datifile.pdf Graphic file (type pdf)
  <use datifile.pdf, page 2>
-Package pdftex.def Info: datifile.pdf, page2 used on input line 358.
+Package pdftex.def Info: datifile.pdf, page2 used on input line 310.
 (pdftex.def)             Requested size: 597.61578pt x 422.30568pt.
 File: datifile.pdf Graphic file (type pdf)
 
 <use datifile.pdf, page 2>
-Package pdftex.def Info: datifile.pdf, page2 used on input line 358.
+Package pdftex.def Info: datifile.pdf, page2 used on input line 310.
 (pdftex.def)             Requested size: 597.61578pt x 422.30568pt.
- [15 <./datifile.pdf>] [16] [17]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 386.
- [18]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 386.
+ [12 <./datifile.pdf>] [13] [14]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 336.
+ [15]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 336.
 
 (./Relazione Fuser.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 386.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 386.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 336.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 336.
 Package rerunfilecheck Info: File `"Relazione Fuser".out' has not changed.
-(rerunfilecheck)             Checksum: 4EABCA5774236CB6D448D797602187E5;903.
+(rerunfilecheck)             Checksum: 9A62F04ED529949EF7B6323C0C1D8185;758.
+
+
+LaTeX Warning: There were undefined references.
+
  ) 
 Here is how much of TeX's memory you used:
- 17665 strings out of 493029
- 328503 string characters out of 6136233
- 470849 words of memory out of 5000000
- 20966 multiletter control sequences out of 15000+600000
+ 17647 strings out of 493029
+ 328301 string characters out of 6136233
+ 469823 words of memory out of 5000000
+ 20960 multiletter control sequences out of 15000+600000
  15924 words of font info for 44 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  41i,18n,46p,10389b,862s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1271,10 +1283,10 @@ m-super/sfbx1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1095.pfb
 onts/type1/public/cm-super/sfrm1728.pfb></usr/share/texmf/fonts/type1/public/cm
 -super/sfti1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1095.pfb>
 
-Output written on "Relazione Fuser.pdf" (18 pages, 342279 bytes).
+Output written on "Relazione Fuser.pdf" (15 pages, 303452 bytes).
 PDF statistics:
- 286 PDF objects out of 1000 (max. 8388607)
- 234 compressed objects within 3 object streams
- 53 named destinations out of 1000 (max. 500000)
- 153 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 255 PDF objects out of 1000 (max. 8388607)
+ 207 compressed objects within 3 object streams
+ 43 named destinations out of 1000 (max. 500000)
+ 132 words of extra memory for PDF output out of 10000 (max. 10000000)
 
