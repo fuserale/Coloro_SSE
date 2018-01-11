@@ -290,7 +290,7 @@ Dove SAT indica che la formula è soddisfacibile tramite l'assegnamento delle va
 
 \section{Prestazioni}
 Tutte le prove sono state fatto su una macchina portatile con un i7-4710HQ e 16GB di RAM.\\
-Il confronto è stato fatto su una serie di grafi presi dal sito \href{https://sites.google.com/site/graphcoloring/vertex-coloring}{Graph Coloring Benchmarks}. Sono stati relazionati i tempi relativi alla soluzione con Espresso, con Minisat \cite{minisat} (solutore per SAT), DPLL \cite{dpll}(solutore per SAT) e i risultati della \cite{tesi}.
+Il confronto è stato fatto su una serie di grafi presi dal sito \href{https://sites.google.com/site/graphcoloring/vertex-coloring}{Graph Coloring Benchmarks}\cite{site}. Sono stati relazionati i tempi relativi alla soluzione con Espresso, con Minisat \cite{minisat} (solutore per SAT), DPLL \cite{dpll}(solutore per SAT) e i risultati della \cite{tesi}.
 Per ogni problema, è stato impostato un timer di 30 minuti in quanto eravamo interessati ad una risoluzione veloce del problema. L'unica eccezione viene data dal problema \href{https://it.wikipedia.org/wiki/Rompicapo_delle_otto_regine}{\textbf{queen8}}, che viene preso come esempio principale della difficoltà computazionale.
 Le tempistiche sono riassunte nella tabella successiva, dove:
 \begin{itemize}
@@ -312,7 +312,7 @@ Le tempistiche sono riassunte nella tabella successiva, dove:
 \subsection{Commenti}
 Come si può notare, in tutti i problemi la risoluzione tramite MINISAT è molto più rapida rispetto ad Espresso. Questo potrebbe essere dovuto alla complessità computazionale della minimizzazione di espresso, che può essere molto dispendiosa sia in termini di tempo che di risorse, dato che le 3 funzioni interne di espresso portano a colorare il grafo in funzione degli implicanti primi essenziali della funzione di partenza (complessi da calcolare).\\
 E' interessante notare però come il problema queen8 (così come il problema queen9) non è stato risolto nè da espresso nè da MINISAT in termini ragionevoli (24 ore), il che ci fa capire che problemi difficili sono tali sia per espresso che per MINISAT.\\
-Rispetto al DPLL, MINISAT è più veloce in quanto si basa sullo stesso algoritmo usato per DPLL, ma aggiungendo molte ottimizzazioni, come si legge in \cite{minisat}. DPLL è stato abbandonato dopo pochi problemi in quanto riportano sempre tempi maggiori rispetto a MINISAT, per cui ci si è concentrati sul migliore risolutore per SAT.\\
+Rispetto al DPLL, MINISAT è più veloce in quanto si basa sullo stesso algoritmo usato per DPLL, ma aggiungendo molte ottimizzazioni, come si legge in \cite{minisat}. DPLL è stato abbandonato dopo pochi problemi (e quindi non inserito nella tabella) in quanto riporta sempre tempi maggiori rispetto a MINISAT, per cui ci si è concentrati sul migliore risolutore per SAT.\\
 Un altro aspetto da tenere conto è il fatto che sfruttare il problema della clique come punto di partenza della scelta dei colori è più efficace rispetto ad usare un approccio binario per la ricerca dei colori e la clique come lower bound. Questo è dovuto al fatto che, nella maggior parte dei casi, il valore della clique più grande è molto vicino al numero cromatico del grafo, per cui le iterazioni sono minori.
 
 \pagebreak
@@ -320,7 +320,7 @@ Un altro aspetto da tenere conto è il fatto che sfruttare il problema della cli
 \section{Lavori Futuri}
 Per lavori futuri, sarebbe interessante provare altri solutori SAT in modo da vedere se anche i problemi che non vengono risolti usando i solutori presentati vengono decisi.\\
 Un altro aspetto interessante sarebbe quello di capire se la non risoluzione è dovuta alla semplice mancanza di sufficiente potenza di calcolo, per cui sfruttare un computer dalle prestazioni superiori, magari un supercomputer.\\
-Dato che Espresso, nella sua esecuzione, trova tutte le possibili colorazioni del grafo dopo aver definito un determinato k (numero dei colori) ma ne restituisce una sola tra quelle trovate, mentre un qualsiasi algoritmo di risoluzione SAT cerca di risolvere il più in fretta possibile il problema e restituisce la prima colorazione trovata che soddisfa la formula, un'ulteriore tema che potrebbe essere interessante affrontare è quello della multi-colorazione dei grafi, ossia trovare tutte le possibili colorazione del grafo dato il k (numero di colori) e vedere quale di esse è più vantaggiosa usare rispetto ad altre metriche da definire, per cui verificare se anche in questo problema Espresso (che codifica già in modo compatto tutte le soluzioni, ossia trova già tutte le possibili colorazioni) è più lento rispetto ai solutori SAT (che deve ora iterare più volte per trovare tutte le possibili colorazioni) oppure se in questo problema Espresso si trova in una situazione di vantaggio, avendo già a disposizione tutte le possibili colorazioni.
+Dato che Espresso, nella sua esecuzione, trova tutte le possibili colorazioni del grafo dopo aver definito un determinato k (numero dei colori) ma ne restituisce una sola tra quelle trovate, mentre un qualsiasi algoritmo di risoluzione SAT cerca di risolvere il più in fretta possibile il problema e restituisce la prima colorazione trovata che soddisfa la formula, un'ulteriore tema che potrebbe essere interessante affrontare è quello della multi-colorazione dei grafi, ossia trovare tutte le possibili colorazione del grafo dato il k (numero di colori) e vedere quale di esse è più vantaggiosa usare rispetto ad altre metriche da definire, per cui verificare se anche in questo problema Espresso (che codifica già in modo compatto tutte le soluzioni, ossia trova già tutte le possibili colorazioni) è più lento rispetto ai solutori SAT (che deve ora iterare più volte per trovare tutte le possibili colorazioni) oppure se in questo problema Espresso si trova in una situazione di vantaggio, avendo già a disposizione tutte le possibili colorazioni (definizion ed esempi di multi-colorazione si possono trovare in \cite{tesi2})
 
 
 \pagebreak
@@ -330,6 +330,10 @@ Dato che Espresso, nella sua esecuzione, trova tutte le possibili colorazioni de
 	\emph{Efficient Solving of Combinatorial Problems using SAT-Solvers}
 	
 	\bibitem{minisat} \href{http://minisat.se/}{http://minisat.se/}
+	
+	\bibitem{site} \href{https://sites.google.com/site/graphcoloring/vertex-coloring}{https://sites.google.com/site/graphcoloring/vertex-coloring}
+	
+	\bibitem{tesi2} Stefano Gualandi, Federico Malucelli,  \href{http://www.optimization-online.org/DB_FILE/2010/03/2568.pdf}{\emph{Exact Solution of Graph Coloring Problems via Constraint Programming and Column Generation}}
 \end{thebibliography}
 
 
