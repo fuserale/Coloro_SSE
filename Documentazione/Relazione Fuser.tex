@@ -67,7 +67,7 @@ Una volta che si è trovato un numero k tale per cui il grafo è colorabile, la 
     \caption{Regole riduzione da k-Color a SAT; si definisce $p_{vi}$ il vertice v con il colore i }
 \end{figure}
 Un esempio di conversione, avendo un grafo a 3 vertici, 2 archi e k = 2, dove il vertice 1 è collegato al vertice 2 ed al vertice 3 é: \newline
-$(p_{11} \bigvee p_{12}) \bigwedge (p_{21} \bigvee p_{22}) \bigwedge (p_{31} \bigvee p_{32}) \bigwedge \lnot(p_{11} \bigwedge p_{21}) \bigwedge \lnot(p_{12} \bigwedge p_{22}) \bigwedge \lnot(p_{11} \bigwedge p_{31}) \bigwedge \lnot(p_{12} \bigwedge p_{32})$
+$(p_{11} \bigvee p_{12}) \bigwedge (p_{21} \bigvee p_{22}) \bigwedge (p_{31} \bigvee p_{32}) \bigwedge \lnot(p_{11} \bigwedge p_{12}) \bigwedge \lnot(p_{21} \bigwedge p_{22}) $ \\ $ \bigwedge \lnot(p_{31} \bigwedge p_{32}) \bigwedge \lnot(p_{11} \bigwedge p_{21}) \bigwedge \lnot(p_{12} \bigwedge p_{22}) \bigwedge \lnot(p_{11} \bigwedge p_{31}) \bigwedge \lnot(p_{12} \bigwedge p_{32})$
 \pagebreak
 \section{Formato DIMACS}
 Il formato scelto per i grafi è lo standard DIMACS edge, nel quale:
@@ -123,11 +123,11 @@ sottoregioni presenti nel grafo, un PLA nel modo seguente:
 \begin{itemize}
 	\item Il numero delle variabili di input è uguale al numero dei nodi $|V|$ presenti nel grafo;
 	\item Restituiamo in output 1 bit che indicherà la colorabilità della sottoregione;
-	\item Costruiamo il PLA di tipo fr, pertanto il significato dei termini è il seguente:
+	\item Costruiamo una funzione a due livelli rappresentata in formato fr dove:
 	\begin{itemize}
-		\item con il termine 1, indichiamo che il prodotto dei termini appartenenti all’insieme ON-Set;
-		\item con il termine 0, indichiamo che il prodotto dei termini appartenenti all’insieme OFF-Set;
-		\item con il termine -, indichiamo l’insieme DC-Set, il quale rappresenta il complemento dell’unione tra ON-Set e OFF-Set;
+		\item con  1 indichiamo che il cubo appartiene all' ON-Set;
+		\item con  0 indichiamo che il cubo appartiene all' OFF-Set;
+		\item con - indichiamo che il cubo appartiene al DC-set (complemento dell’unione tra ON-Set e OFF-Set);
 	\end{itemize}
 	\item Definiamo l’insieme degli ON-Set, come $|V|$ righe che rappresentano le aree della mappa che possono avere il medesimo colore;
 	\item Definiamo l’insieme degli OFF-Set, pari al numero degli archi contenuti in E, come l’insieme delle regioni
@@ -171,6 +171,36 @@ Esempio di trasformazione, prendendo il grafo presentato prima:
 ---------11 0
 .end
 \end{verbatim}
+-\subsection{Minimizzazione tramite espresso}
+Passiamo l’input generato a espresso il quale, mediante l’algoritmo Expand Reduce, si preoccuperà di minimizzare la funzione in input F, restituendo l’insieme dei cubi che rappresentano gli implicanti primi che ricoprono F.\\
+La minimizzazione mediante espresso restituirà n termini, indicati nella clausola ".p n", il quale rappresenta il numero di colori necessario per colorare il grafo di input secondo tale minimizzazione.\\
+L’insieme dei DC contenuto in ogni termine, rappresenterà una sotto regione dello spazio indipendente dal grafo,che può avere lo stesso colore. Pertanto, per ogni termine prodotto da espresso, leggiamo quali sono le variabili che hanno il termine Don’t-Care, $0 - 0$ , e, alle variabili associate a cui non è stato ancora assegnato un colore, procediamo assegnando il primo colore disponibile.\\
+Per il grafo precedente quindi:
+\begin{verbatim}
+.i 11
+.o 1
+.p 4
+00000-----0 1
+0000---00-0 1
+-0-0000000- 1
+0-0-00-0-00 1
+.e
+\end{verbatim}
+Al quale corrisponde la seguente colorazione:
+\begin{verbatim}
+A6 assegno colore 1
+A7 assegno colore 1
+A8 assegno colore 1
+A9 assegno colore 1
+A10 assegno colore 1
+A5 assegno colore 2
+A1 assegno colore 3
+A3 assegno colore 3
+A11 assegno colore 3
+A2 assegno colore 4
+A4 assegno colore 4
+\end{verbatim}
+
 
 \pagebreak
 
@@ -290,7 +320,7 @@ Dove SAT indica che la formula è soddisfacibile tramite l'assegnamento delle va
 
 \section{Prestazioni}
 Tutte le prove sono state fatto su una macchina portatile con un i7-4710HQ e 16GB di RAM.\\
-Il confronto è stato fatto su una serie di grafi presi dal sito \href{https://sites.google.com/site/graphcoloring/vertex-coloring}{Graph Coloring Benchmarks}\cite{site}. Sono stati relazionati i tempi relativi alla soluzione con Espresso, con Minisat \cite{minisat} (solutore per SAT), DPLL \cite{dpll}(solutore per SAT) e i risultati della \cite{tesi}.
+Il confronto è stato fatto su una serie di grafi presi dal sito \href{https://sites.google.com/site/graphcoloring/vertex-coloring}{Graph Coloring Benchmarks}\cite{site}. Sono stati confrontati i tempi relativi alla soluzione con Espresso, con Minisat \cite{minisat} (solutore per SAT) ed i risultati della \cite{tesi}.
 Per ogni problema, è stato impostato un timer di 30 minuti in quanto eravamo interessati ad una risoluzione veloce del problema. L'unica eccezione viene data dal problema \href{https://it.wikipedia.org/wiki/Rompicapo_delle_otto_regine}{\textbf{queen8}}, che viene preso come esempio principale della difficoltà computazionale.
 Le tempistiche sono riassunte nella tabella successiva, dove:
 \begin{itemize}
@@ -310,17 +340,17 @@ Le tempistiche sono riassunte nella tabella successiva, dove:
 \includepdf[pages=-]{datifile.pdf}
 
 \subsection{Commenti}
-Come si può notare, in tutti i problemi la risoluzione tramite MINISAT è molto più rapida rispetto ad Espresso. Questo potrebbe essere dovuto alla complessità computazionale della minimizzazione di espresso, che può essere molto dispendiosa sia in termini di tempo che di risorse, dato che le 3 funzioni interne di espresso portano a colorare il grafo in funzione degli implicanti primi essenziali della funzione di partenza (complessi da calcolare).\\
+Come si può notare, in tutti i problemi la risoluzione tramite MINISAT è molto più rapida rispetto ad Espresso. Questo potrebbe essere dovuto alla complessità computazionale della minimizzazione di espresso, che può essere molto dispendiosa sia in termini di tempo che di risorse, per la complessità del problema di minimizzazione generato (ad es., la codifica del problema per espresso richiede un numero di variabili pari ai vertici del grafo).\\
 E' interessante notare però come il problema queen8 (così come il problema queen9) non è stato risolto nè da espresso nè da MINISAT in termini ragionevoli (24 ore), il che ci fa capire che problemi difficili sono tali sia per espresso che per MINISAT.\\
 Rispetto al DPLL, MINISAT è più veloce in quanto si basa sullo stesso algoritmo usato per DPLL, ma aggiungendo molte ottimizzazioni, come si legge in \cite{minisat}. DPLL è stato abbandonato dopo pochi problemi (e quindi non inserito nella tabella) in quanto riporta sempre tempi maggiori rispetto a MINISAT, per cui ci si è concentrati sul migliore risolutore per SAT.\\
-Un altro aspetto da tenere conto è il fatto che sfruttare il problema della clique come punto di partenza della scelta dei colori è più efficace rispetto ad usare un approccio binario per la ricerca dei colori e la clique come lower bound. Questo è dovuto al fatto che, nella maggior parte dei casi, il valore della clique più grande è molto vicino al numero cromatico del grafo, per cui le iterazioni sono minori.
+Un altro aspetto da tenere conto è il fatto che sfruttare il problema della clique come punto di partenza della scelta dei colori è più efficace rispetto ad usare un approccio binario per la ricerca dei colori. Questo è dovuto al fatto che, nella maggior parte dei casi, il valore della clique più grande è molto vicino al numero cromatico del grafo, per cui le iterazioni sono minori.
 
 \pagebreak
 
 \section{Lavori Futuri}
 Per lavori futuri, sarebbe interessante provare altri solutori SAT in modo da vedere se anche i problemi che non vengono risolti usando i solutori presentati vengono decisi.\\
 Un altro aspetto interessante sarebbe quello di capire se la non risoluzione è dovuta alla semplice mancanza di sufficiente potenza di calcolo, per cui sfruttare un computer dalle prestazioni superiori, magari un supercomputer.\\
-Dato che Espresso, nella sua esecuzione, trova tutte le possibili colorazioni del grafo dopo aver definito un determinato k (numero dei colori) ma ne restituisce una sola tra quelle trovate, mentre un qualsiasi algoritmo di risoluzione SAT cerca di risolvere il più in fretta possibile il problema e restituisce la prima colorazione trovata che soddisfa la formula, un'ulteriore tema che potrebbe essere interessante affrontare è quello della multi-colorazione dei grafi, ossia trovare tutte le possibili colorazione del grafo dato il k (numero di colori) e vedere quale di esse è più vantaggiosa usare rispetto ad altre metriche da definire, per cui verificare se anche in questo problema Espresso (che codifica già in modo compatto tutte le soluzioni, ossia trova già tutte le possibili colorazioni) è più lento rispetto ai solutori SAT (che deve ora iterare più volte per trovare tutte le possibili colorazioni) oppure se in questo problema Espresso si trova in una situazione di vantaggio, avendo già a disposizione tutte le possibili colorazioni (definizion ed esempi di multi-colorazione si possono trovare in \cite{tesi2})
+Dato che Espresso, nella sua esecuzione, trova tutte le possibili colorazioni del grafo dopo aver definito un determinato k (numero dei colori), mentre un qualsiasi algoritmo di risoluzione SAT cerca di risolvere il più in fretta possibile il problema e restituisce la prima colorazione trovata che soddisfa la formula, un'ulteriore tema che potrebbe essere interessante affrontare è quello della multi-colorazione dei grafi, ossia trovare tutte le possibili colorazione del grafo dato il k (numero di colori) e vedere quale di esse è più vantaggiosa usare rispetto ad altre metriche da definire, per cui verificare se anche in questo problema Espresso (che codifica già in modo compatto tutte le soluzioni, ossia trova già tutte le possibili colorazioni) è più lento rispetto ai solutori SAT (che deve ora iterare più volte per trovare tutte le possibili colorazioni) oppure se in questo problema Espresso si trova in una situazione di vantaggio, avendo già a disposizione tutte le possibili colorazioni (definizion ed esempi di multi-colorazione si possono trovare in \cite{tesi2})
 
 
 \pagebreak
