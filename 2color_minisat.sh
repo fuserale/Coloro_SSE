@@ -200,12 +200,14 @@ NColori=$(grep '.type ' $input_file | sed -e 's/.*[.p] //' -e 's/\r//g')
 EndRow=$(($(grep -c '' $input_file) - 1 ))
 StartRow=$(( $EndRow - $(grep -n '.type ' $input_file | sed -e 's/:.*//' -e 's/\r//g') ))
 
+
 ################################################################
 #trovo la clique più grande per capire il numero minimo di colori
-echo "################################################"
-./cl -x $read_file > $maxclique
-echo "################################################"
-LowerBound=$(head -c 8 $maxclique | sed 's/[^0-9]//g')
+#echo "################################################"
+#./cl -x $read_file > $maxclique
+#echo "################################################"
+#LowerBound=$(head -c 8 $maxclique | sed 's/[^0-9]//g')
+LowerBound=$1;
 NColori=$Nodi
 ################################################################
 START=$(date +%s.%N)
@@ -220,6 +222,7 @@ echo "Grafo $filename Colorabile con $res colori"
 END=$(date +%s.%N)
 DIFF=$(echo "$END - $START" | bc)
 echo "Total time of execution $DIFF"
+rm -f $input_file
 # kill timeout monitor when terminating:
 kill "$Timeout_monitor_pid"
 exit

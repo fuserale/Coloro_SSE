@@ -12,8 +12,9 @@ I programmi sono stati scritti usando il linguaggio bash di Linux e sono:
 	- color_espresso.sh --> usa la versione euristica di espresso
 	- color_espresso_exact.sh --> usa la versione esatta di espresso
 	- color_minisat.sh --> usa il solutore MINISAT
+	- 2color_minisat.sh --> usa il solutore MINISAT e ricerca dei colori binaria
 	- color_dpll.sh --> usa il solutore DPLL e ricerca dei colori con clique
-	- 2color_dpll.sh --> usa il solutore DPLL e ricerca dei colori binaria
+	
 
 La cartella File contiene tutti i grafi nel formato DIMACS usati per il progetto
 
@@ -45,8 +46,7 @@ Se l'opzione -m non viene usata, è richiesto d mettere il nome del file in inpu
 NB: mettere sempre "File/" prima del nome del file
 
 Il programma genera:
-	- il file input_file_myciel3.pla
-	- il file maxclique.myciel3.txt (massima dimensione della clique)
+	- il file maxclique.myciel3.txt (massima dimensione della clique, tramite l'eseguibile cl)
 	- il file myciel3.cnf (traduzione del grafo in CNF)
 	- il file control.myciel.3.txt (assegnazione variabili per CNF)
 ##################################################################
