@@ -40,7 +40,12 @@ A video viene segnalato invece il tempo totale di esecuzione
 ##################################################################
 Esempio di lancio di programma minisat da terminale:
 
-	bash ./color_espresso.sh [-m File/myciel3.col]
+	bash ./color_minisat.sh [-m File/myciel3.col]
+	
+	oppure
+	
+	bash ./2color_minisat.sh [-m File/myciel3.col]
+	
 
 Se l'opzione -m non viene usata, è richiesto d mettere il nome del file in input
 NB: mettere sempre "File/" prima del nome del file
